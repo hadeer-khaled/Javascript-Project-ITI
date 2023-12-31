@@ -5351,3 +5351,6 @@ readers do not read off random characters that represent icons */
 .inputbutton:hover {
   background: #d94148;
 }
+.hidden {
+  display: none;
+}

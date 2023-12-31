@@ -22,6 +22,13 @@ countriesNameSelectElem.addEventListener("change", function () {
   selectedCountry = countriesNameSelectElem.value;
   // console.log(selectedCountry);
 
+  var bodySections = document.getElementsByClassName("body-section");
+  console.log(bodySections);
+
+  for (var i = 0; i < bodySections.length; i++) {
+    console.log(bodySections[i].classList.remove("hidden"));
+  }
+
   fetch(`https://restcountries.com/v3.1/name/${selectedCountry}`)
     .then((response) => {
       return response.json();
@@ -86,7 +93,6 @@ countriesNameSelectElem.addEventListener("change", function () {
       // get and set timezones
       const capital = data[0].capital;
       document.getElementById("capital").innerHTML = `${capital}`;
-      //
 
       //=============== News  =================================//
       const cca2 = data[0].cca2;
@@ -100,6 +106,7 @@ countriesNameSelectElem.addEventListener("change", function () {
         .then((newsData) => {
           var newsList = newsData.news;
           console.log(newsList);
+          document.getElementById("news-container").innerHTML = "";
           for (var i = 0; i < 4; i++) {
             var date = new Date(newsList[i].publish_date);
 
@@ -109,8 +116,8 @@ countriesNameSelectElem.addEventListener("change", function () {
             <div class="col-md-3 col-sm-6">
               <div class="news-box">
                 <div class="new-thumb">
-                  <span class="cat c1">Economy</span>
-                  <img src="images/h3citynews-1.jpg" alt="" />
+                  <span class="cat c1">News</span>
+                  <img src="${newsList[i].image}" alt="" />
                 </div>
                 <div class="new-txt">
                   <ul class="news-meta">
@@ -144,9 +151,13 @@ countriesNameSelectElem.addEventListener("change", function () {
         .catch((err) => {
           console.log(err);
         });
-      //   // publish-date title news-text author
-      //   // author image text title publish_date
-      //   /////////////////////////////////////////////////////////////
+      //-----------------------------------Maps --------------------------------------//
+
+      var variableName = document.getElementById("map-frame");
+      // const apiKey = "AIzaSyBeFwbxwlie8EhSrN2Npe8rBhbNf5cXSnI";
+      countryName = data[0].name.common;
+      const Url = `https://www.google.com/maps?q=${countryName}&hl=en&z=6&output=embed`;
+      variableName.src = Url;
     });
 });
 
