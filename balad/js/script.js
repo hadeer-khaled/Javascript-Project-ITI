@@ -1,13 +1,15 @@
 var countriesNameSelectElem = document.getElementById("countries-name-select");
 var countriesNameOptions = document.getElementById("countries-name-options");
 
+// create countery name array
+
 fetch(`https://restcountries.com/v3.1/all`)
   .then((response) => {
     return response.json();
   })
   .then((data) => {
+    // array of objects
     // console.log(data);
-
     // ----------------------- set countries name options ----------------------- //
     const countryNames = data.map((country) => country.name.common).sort();
 
@@ -16,6 +18,7 @@ fetch(`https://restcountries.com/v3.1/all`)
     });
     // console.log(countryNames);
   });
+////////////////////////////////////////////////////////////////////////////////
 
 var selectedCountry;
 countriesNameSelectElem.addEventListener("change", function () {
@@ -25,16 +28,18 @@ countriesNameSelectElem.addEventListener("change", function () {
   var bodySections = document.getElementsByClassName("body-section");
   console.log(bodySections);
 
+  //========================= show country data if the user select a country =================== //
   for (var i = 0; i < bodySections.length; i++) {
-    console.log(bodySections[i].classList.remove("hidden"));
+    bodySections[i].classList.remove("hidden");
   }
+  //====================================================================================== //
 
   fetch(`https://restcountries.com/v3.1/name/${selectedCountry}`)
     .then((response) => {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      console.log(data); // object of country
 
       // get and set  the flag image
       const flagURL = data[0].flags.png;
@@ -95,7 +100,7 @@ countriesNameSelectElem.addEventListener("change", function () {
       document.getElementById("capital").innerHTML = `${capital}`;
 
       //=============== News  =================================//
-      const cca2 = data[0].cca2;
+      const cca2 = data[0].name.common;
       console.log(cca2);
       fetch(
         `https://api.worldnewsapi.com/search-news?api-key=6928b527c2c4443eaee5d00794032019&text=${cca2}`
@@ -105,48 +110,115 @@ countriesNameSelectElem.addEventListener("change", function () {
         })
         .then((newsData) => {
           var newsList = newsData.news;
-          console.log(newsList);
-          document.getElementById("news-container").innerHTML = "";
-          for (var i = 0; i < 4; i++) {
-            var date = new Date(newsList[i].publish_date);
+          console.log("newsList", newsList);
 
-            document.getElementById(
-              "news-container"
-            ).innerHTML += ` <!--News Box Start-->
-            <div class="col-md-3 col-sm-6">
-              <div class="news-box">
-                <div class="new-thumb">
-                  <span class="cat c1">News</span>
-                  <img src="${newsList[i].image}" alt="" />
-                </div>
-                <div class="new-txt">
-                  <ul class="news-meta">
-                    <li id="publish-data">${date.getDate()} ${date.toLocaleString(
-              "default",
-              { month: "short" }
-            )}, ${date.getFullYear()} </li>   
-                  </ul>
-                  <h6>
-                    <a id="title" href="index.html#"
-                      >${newsList[i].title}</a
-                    >
-                  </h6>
-                  <p id="news-text">
-                  ${newsList[i].text.slice(0, 101)}
-                  </p>
-                </div>
-                <div class="news-box-f">
-                  <img
-                    id="author"
-                    src="https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
-                    alt="" />
-                    ${newsList[i].author}
-                  <a href="index.html#"><i class="fas fa-arrow-right"></i></a>
-                </div>
-              </div>
-            </div>
-            <!--News Box End-->`;
-          }
+          //////////////////////////////////////////////////////////////////////////////////////////////
+
+          let i = 0;
+          let newsCardArray = document.querySelectorAll(".news-box");
+          newsCardArray.forEach((element) => {
+            if (newsList.length > 0) {
+              if (newsList[i].image != null) {
+                imgeVar = newsList[i].image;
+              }
+
+              element
+                .querySelector(".new-thumb")
+                .querySelector("img").src = `${imgeVar}`;
+              element.querySelector(".new-thumb").querySelector("img").onerror =
+                function () {
+                  element.querySelector(".new-thumb").querySelector("img").src =
+                    "balad/images/news.jpg";
+                };
+              var date = new Date(newsList[i].publish_date);
+              element
+                .querySelector(".new-txt")
+                .querySelector(".news-meta")
+                .querySelector(
+                  "li"
+                ).innerHTML = `${date.getDate()} ${date.toLocaleString(
+                "default",
+                { month: "short" }
+              )}, ${date.getFullYear()}`;
+              element
+                .querySelector(".new-txt")
+                .querySelector("h6")
+                .querySelector("a").href = `${newsList[i].url}`;
+
+              element
+                .querySelector(".new-txt")
+                .querySelector("h6")
+                .querySelector("a").innerHTML = `${newsList[i].title}`;
+              element
+                .querySelector(".new-txt")
+                .querySelector("p").innerHTML = `${newsList[i].text.slice(
+                0,
+                101
+              )}`;
+
+              element
+                .querySelector(".news-box-f")
+                .querySelector("span").innerHTML = `${newsList[i].author}`;
+
+              element
+                .querySelector(".news-box-f")
+                .querySelector("a").href = `${newsList[i].url}`;
+
+              i++;
+            }
+          });
+          ///////////////////////////////////////////////////////////////////////////////////////////
+
+          ///////////////////////////////////////////Old Approach////////////////////////////////////////////////
+          // document.getElementById("news-container").innerHTML = "";
+          // alternativeImage = "balad/images/altImage.jpg";
+          // for (var i = 0; i < 4; i++) {
+          //   var date = new Date(newsList[i].publish_date);
+          //   //const img = new Image();
+          //   //img.src = newsList[i].image;
+
+          //   //img.src = newsList[i].image;
+          //   document.getElementById(
+          //     "news-container"
+          //   ).innerHTML += ` <!--News Box Start-->
+          //   <div class="col-md-3 col-sm-6">
+          //     <div class="news-box">
+          //       <div class="new-thumb">
+          //         <span class="cat c1">News</span>
+          //         <img src="${
+          //           newsList[i].image
+          //         }"  style="width: 263px; height: 200px; display:block;" alt="" />
+          //       </div>
+          //       <div class="new-txt">
+          //         <ul class="news-meta">
+          //           <li id="publish-data">${date.getDate()} ${date.toLocaleString(
+          //     "default",
+          //     { month: "short" }
+          //   )}, ${date.getFullYear()} </li>
+          //         </ul>
+          //         <h6>
+          //           <a id="title" href="index.html#"
+          //             >${newsList[i].title.slice(0, 50)}}</a
+          //           >
+          //         </h6>
+          //         <p id="news-text">
+          //         ${newsList[i].text.slice(0, 101)}
+          //         </p>
+          //       </div>
+          //       <div class="news-box-f">
+          //         <img
+          //           id="author"
+          //           src="https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
+          //           alt="" />
+          //           ${newsList[i].authors[0]}
+          //         <a href="index.html#"><i class="fas fa-arrow-right"></i></a>
+          //       </div>
+          //     </div>
+          //   </div>
+          //   <!--News Box End-->`;
+
+          // }
+          //////////////////////////////////////////////////////////////////////////////////////////////
         })
         .catch((err) => {
           console.log(err);
