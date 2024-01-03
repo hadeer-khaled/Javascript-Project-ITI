@@ -5351,6 +5351,47 @@ readers do not read off random characters that represent icons */
 .inputbutton:hover {
   background: #d94148;
 }
-.hidden {
+.removed {
   display: none;
+}
+.hidden {
+  visibility: hidden;
+}
+
+.send-status {
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 3px;
+  margin-top: 30px;
+  font-weight: bold;
+  font-size: 15px;
+}
+.email-success {
+  background-color: #cff4fc;
+  color: #46aee3;
+}
+.email-fail {
+  background-color: #f8d7da;
+  color: #58151c;
+}
+.israel-div {
+  width: 90%;
+  margin: 40px auto;
+  /* background-color: #40407e; */
+  text-align: center;
+  /* display: flex;
+  flex-wrap: wrap; */
+}
+.israel-div p {
+  color: #333371;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.israel-div p:last-child {
+  margin-top: 20px;
+}
+.israel-div img {
+  width: 300px;
+  /* height: 200px; */
 }

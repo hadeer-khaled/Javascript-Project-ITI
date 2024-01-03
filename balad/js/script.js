@@ -23,218 +23,245 @@ fetch(`https://restcountries.com/v3.1/all`)
 var selectedCountry;
 countriesNameSelectElem.addEventListener("change", function () {
   selectedCountry = countriesNameSelectElem.value;
+  // selectedCountry = "Israel";
   // console.log(selectedCountry);
 
   var bodySections = document.getElementsByClassName("body-section");
   console.log(bodySections);
 
   //========================= show country data if the user select a country =================== //
-  for (var i = 0; i < bodySections.length; i++) {
-    bodySections[i].classList.remove("hidden");
-  }
-  //====================================================================================== //
+  if (selectedCountry == "Israel") {
+    for (var i = 0; i < bodySections.length; i++) {
+      bodySections[i].classList.add("removed");
+    }
+    document.getElementById("main-content").innerHTML += ` 
+     <div class = "israel-div"> 
+      <p>Israel is not a country, but just an entity that occupies the Palestinian territories.</p>
+      <p>This is part of what Israel does in Palestine: </p>
 
-  fetch(`https://restcountries.com/v3.1/name/${selectedCountry}`)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data); // object of country
+      <img src="images/israelCrimes/is3.jpg" alt="isreal crime">
+      <img src="images/israelCrimes/is11.jpg" alt="isreal crime">
+      <img src="images/israelCrimes/is12.jpg" alt="isreal crime">
+      <img src="images/israelCrimes/is8.jpg" alt="isreal crime">
+      <img src="images/israelCrimes/is4.jpg" alt="isreal crime">
+      
+      <p> For more information about the occupation and Israel's crimes, please watch  <a href ="https://youtu.be/f0oy-NicIgE?si=jzB2hhrflCjbaazJ" target = "blank">this video</a> </p>.
+      </div> `;
+  } else {
+    for (var i = 0; i < bodySections.length; i++) {
+      bodySections[i].classList.remove("removed");
+    }
+    //====================================================================================== //
 
-      // get and set  the flag image
-      const flagURL = data[0].flags.png;
-      document.getElementById("flag-img").src = `${flagURL}`;
+    fetch(`https://restcountries.com/v3.1/name/${selectedCountry}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data); // object of country
 
-      // get and set  the coatOfArms image
-      const coatOfArmsURL = data[0].coatOfArms.png;
-      document.getElementById("coat-of-arms-img").src = `${coatOfArmsURL}`;
+        // get and set  the flag image
+        const flagURL = data[0].flags.png;
+        document.getElementById("flag-img").src = `${flagURL}`;
 
-      // checl if the country if united
-      const isUNMember = data[0].unMember;
-      if (isUNMember) {
+        // get and set  the coatOfArms image
+        const coatOfArmsURL = data[0].coatOfArms.png;
+        document.getElementById("coat-of-arms-img").src = `${coatOfArmsURL}`;
+
+        // checl if the country if united
+        const isUNMember = data[0].unMember;
+        if (isUNMember) {
+          document.getElementById(
+            "united-status"
+          ).innerHTML = ` United Nations <i class="fas fa-check"></i>`;
+        } else {
+          document.getElementById(
+            "united-status"
+          ).innerHTML = `United Nations <i class="fas fa-times"></i>`;
+        }
+
+        // checl if the country is independent.
+        const isIndependent = data[0].independent;
+        if (isIndependent) {
+          document.getElementById(
+            "independent-status"
+          ).innerHTML = ` Independent <i class="fas fa-check"></i>`;
+        } else {
+          document.getElementById(
+            "independent-status"
+          ).innerHTML = `Independent <i class="fas fa-times"></i>`;
+        }
+
+        // get and set population
+        const populationNum = data[0].population;
         document.getElementById(
-          "united-status"
-        ).innerHTML = ` United Nations <i class="fas fa-check"></i>`;
-      } else {
+          "population"
+        ).innerHTML = `${populationNum.toLocaleString("en-AU")}`;
+
+        // get and set region
+        const region = data[0].region;
+        document.getElementById("region").innerHTML = `${region}`;
+
+        // get and set region
+        const startOfWeek = data[0].startOfWeek;
+        const startOfWeekCapitalized =
+          startOfWeek.charAt(0).toUpperCase() + startOfWeek.slice(1);
         document.getElementById(
-          "united-status"
-        ).innerHTML = `United Nations <i class="fas fa-times"></i>`;
-      }
+          "start-of-week"
+        ).innerHTML = `${startOfWeekCapitalized}`;
 
-      // checl if the country is independent.
-      const isIndependent = data[0].independent;
-      if (isIndependent) {
-        document.getElementById(
-          "independent-status"
-        ).innerHTML = ` Independent <i class="fas fa-check"></i>`;
-      } else {
-        document.getElementById(
-          "independent-status"
-        ).innerHTML = `Independent <i class="fas fa-times"></i>`;
-      }
+        // get and set timezones
+        const timezones = data[0].timezones;
+        document.getElementById("time-zone").innerHTML = `${timezones}`;
 
-      // get and set population
-      const populationNum = data[0].population;
-      document.getElementById(
-        "population"
-      ).innerHTML = `${populationNum.toLocaleString("en-AU")}`;
+        // get and set timezones
+        const capital = data[0].capital;
+        document.getElementById("capital").innerHTML = `${capital}`;
 
-      // get and set region
-      const region = data[0].region;
-      document.getElementById("region").innerHTML = `${region}`;
+        //=============== News  =================================//
+        const cca2 = data[0].name.common;
+        console.log(cca2);
+        fetch(
+          `https://api.worldnewsapi.com/search-news?api-key=ae94509454cb4badb712cf2b26e0af53&text=${cca2}`
+        )
+          .then((res) => {
+            return res.json();
+          })
+          .then((newsData) => {
+            var newsList = newsData.news;
+            console.log("newsList", newsList);
 
-      // get and set region
-      const startOfWeek = data[0].startOfWeek;
-      const startOfWeekCapitalized =
-        startOfWeek.charAt(0).toUpperCase() + startOfWeek.slice(1);
-      document.getElementById(
-        "start-of-week"
-      ).innerHTML = `${startOfWeekCapitalized}`;
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            let i = 0;
+            let newsCardArray = document.querySelectorAll(".news-box");
+            var date = new Date(newsList[i].publish_date);
+            newsCardArray.forEach((element) => {
+              if (newsList.length > 0) {
+                if (newsList[i].image != null) {
+                  imgeVar = newsList[i].image;
+                }
 
-      // get and set timezones
-      const timezones = data[0].timezones;
-      document.getElementById("time-zone").innerHTML = `${timezones}`;
-
-      // get and set timezones
-      const capital = data[0].capital;
-      document.getElementById("capital").innerHTML = `${capital}`;
-
-      //=============== News  =================================//
-      const cca2 = data[0].name.common;
-      console.log(cca2);
-      fetch(
-        `https://api.worldnewsapi.com/search-news?api-key=6928b527c2c4443eaee5d00794032019&text=${cca2}`
-      )
-        .then((res) => {
-          return res.json();
-        })
-        .then((newsData) => {
-          var newsList = newsData.news;
-          console.log("newsList", newsList);
-
-          //////////////////////////////////////////////////////////////////////////////////////////////
-
-          let i = 0;
-          let newsCardArray = document.querySelectorAll(".news-box");
-          newsCardArray.forEach((element) => {
-            if (newsList.length > 0) {
-              if (newsList[i].image != null) {
-                imgeVar = newsList[i].image;
-              }
-
-              element
-                .querySelector(".new-thumb")
-                .querySelector("img").src = `${imgeVar}`;
-              element.querySelector(".new-thumb").querySelector("img").onerror =
-                function () {
+                element
+                  .querySelector(".new-thumb")
+                  .querySelector("img").src = `${imgeVar}`;
+                element
+                  .querySelector(".new-thumb")
+                  .querySelector("img").onerror = function () {
                   element.querySelector(".new-thumb").querySelector("img").src =
-                    "balad/images/news.jpg";
+                    "images/eg1.jpg";
                 };
-              var date = new Date(newsList[i].publish_date);
-              element
-                .querySelector(".new-txt")
-                .querySelector(".news-meta")
-                .querySelector(
-                  "li"
-                ).innerHTML = `${date.getDate()} ${date.toLocaleString(
-                "default",
-                { month: "short" }
-              )}, ${date.getFullYear()}`;
-              element
-                .querySelector(".new-txt")
-                .querySelector("h6")
-                .querySelector("a").href = `${newsList[i].url}`;
+                element
+                  .querySelector(".new-txt")
+                  .querySelector(".news-meta")
+                  .querySelector(
+                    "li"
+                  ).innerHTML = `${date.getDate()} ${date.toLocaleString(
+                  "default",
+                  { month: "short" }
+                )}, ${date.getFullYear()}`;
+                element
+                  .querySelector(".new-txt")
+                  .querySelector("h6")
+                  .querySelector("a").href = `${newsList[i].url}`;
 
-              element
-                .querySelector(".new-txt")
-                .querySelector("h6")
-                .querySelector("a").innerHTML = `${newsList[i].title}`;
-              element
-                .querySelector(".new-txt")
-                .querySelector("p").innerHTML = `${newsList[i].text.slice(
-                0,
-                101
-              )}`;
+                element
+                  .querySelector(".new-txt")
+                  .querySelector("h6")
+                  .querySelector("a").innerHTML = `${newsList[i].title}`;
+                element
+                  .querySelector(".new-txt")
+                  .querySelector("p").innerHTML = `${newsList[i].text.slice(
+                  0,
+                  101
+                )}`;
 
-              element
-                .querySelector(".news-box-f")
-                .querySelector("span").innerHTML = `${newsList[i].author}`;
+                element
+                  .querySelector(".news-box-f")
+                  .querySelector("span").innerHTML = `${newsList[i].author}`;
 
-              element
-                .querySelector(".news-box-f")
-                .querySelector("a").href = `${newsList[i].url}`;
+                element
+                  .querySelector(".news-box-f")
+                  .querySelector("a").href = `${newsList[i].url}`;
 
-              i++;
-            }
+                i++;
+              }
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+
+            ///////////////////////////////////////////Old Approach////////////////////////////////////////////////
+            // document.getElementById("news-container").innerHTML = "";
+            // alternativeImage = "balad/images/altImage.jpg";
+            // for (var i = 0; i < 4; i++) {
+            //   var date = new Date(newsList[i].publish_date);
+            //   //const img = new Image();
+            //   //img.src = newsList[i].image;
+
+            //   //img.src = newsList[i].image;
+            //   document.getElementById(
+            //     "news-container"
+            //   ).innerHTML += ` <!--News Box Start-->
+            //   <div class="col-md-3 col-sm-6">
+            //     <div class="news-box">
+            //       <div class="new-thumb">
+            //         <span class="cat c1">News</span>
+            //         <img src="${
+            //           newsList[i].image
+            //         }"  style="width: 263px; height: 200px; display:block;" alt="" />
+            //       </div>
+            //       <div class="new-txt">
+            //         <ul class="news-meta">
+            //           <li id="publish-data">${date.getDate()} ${date.toLocaleString(
+            //     "default",
+            //     { month: "short" }
+            //   )}, ${date.getFullYear()} </li>
+            //         </ul>
+            //         <h6>
+            //           <a id="title" href="index.html#"
+            //             >${newsList[i].title.slice(0, 50)}}</a
+            //           >
+            //         </h6>
+            //         <p id="news-text">
+            //         ${newsList[i].text.slice(0, 101)}
+            //         </p>
+            //       </div>
+            //       <div class="news-box-f">
+            //         <img
+            //           id="author"
+            //           src="https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
+            //           alt="" />
+            //           ${newsList[i].authors[0]}
+            //         <a href="index.html#"><i class="fas fa-arrow-right"></i></a>
+            //       </div>
+            //     </div>
+            //   </div>
+            //   <!--News Box End-->`;
+
+            // }
+            //////////////////////////////////////////////////////////////////////////////////////////////
+          })
+          .catch((err) => {
+            console.log(err);
           });
-          ///////////////////////////////////////////////////////////////////////////////////////////
+        //-----------------------------------Maps --------------------------------------//
 
-          ///////////////////////////////////////////Old Approach////////////////////////////////////////////////
-          // document.getElementById("news-container").innerHTML = "";
-          // alternativeImage = "balad/images/altImage.jpg";
-          // for (var i = 0; i < 4; i++) {
-          //   var date = new Date(newsList[i].publish_date);
-          //   //const img = new Image();
-          //   //img.src = newsList[i].image;
+        var mapFrame = document.getElementById("map-frame");
+        var mapBtn = document.getElementById("map-btn");
 
-          //   //img.src = newsList[i].image;
-          //   document.getElementById(
-          //     "news-container"
-          //   ).innerHTML += ` <!--News Box Start-->
-          //   <div class="col-md-3 col-sm-6">
-          //     <div class="news-box">
-          //       <div class="new-thumb">
-          //         <span class="cat c1">News</span>
-          //         <img src="${
-          //           newsList[i].image
-          //         }"  style="width: 263px; height: 200px; display:block;" alt="" />
-          //       </div>
-          //       <div class="new-txt">
-          //         <ul class="news-meta">
-          //           <li id="publish-data">${date.getDate()} ${date.toLocaleString(
-          //     "default",
-          //     { month: "short" }
-          //   )}, ${date.getFullYear()} </li>
-          //         </ul>
-          //         <h6>
-          //           <a id="title" href="index.html#"
-          //             >${newsList[i].title.slice(0, 50)}}</a
-          //           >
-          //         </h6>
-          //         <p id="news-text">
-          //         ${newsList[i].text.slice(0, 101)}
-          //         </p>
-          //       </div>
-          //       <div class="news-box-f">
-          //         <img
-          //           id="author"
-          //           src="https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
-          //           alt="" />
-          //           ${newsList[i].authors[0]}
-          //         <a href="index.html#"><i class="fas fa-arrow-right"></i></a>
-          //       </div>
-          //     </div>
-          //   </div>
-          //   <!--News Box End-->`;
-
-          // }
-          //////////////////////////////////////////////////////////////////////////////////////////////
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      //-----------------------------------Maps --------------------------------------//
-
-      var variableName = document.getElementById("map-frame");
-      // const apiKey = "AIzaSyBeFwbxwlie8EhSrN2Npe8rBhbNf5cXSnI";
-      countryName = data[0].name.common;
-      const Url = `https://www.google.com/maps?q=${countryName}&hl=en&z=6&output=embed`;
-      variableName.src = Url;
-    });
-});
+        // const apiKey = "AIzaSyBeFwbxwlie8EhSrN2Npe8rBhbNf5cXSnI";
+        countryName = data[0].name.common;
+        const Url = `https://www.google.com/maps?q=${countryName}&hl=en&z=6&output=embed`;
+        mapFrame.src = Url;
+        mapBtn.href = data[0].maps.googleMaps;
+      });
+  }
+}); // End of countriesNameSelectElem.addEventListener({})
 
 //=============== Gey in touch =================================//
 var submitElm = document.getElementById("submit");
+var emailRow = document.getElementById("email-row");
+var emailStatus = document.getElementById("email-status");
+
 function sendMail() {
   (function () {
     emailjs.init("nR2NW5Zn2awN3i0-0");
@@ -251,12 +278,30 @@ function sendMail() {
     .send(serviceID, templateID, mailData)
     .then((res) => {
       // console.log(res);
+
       document.getElementById("name").value = " ";
       document.getElementById("email").value = " ";
       document.getElementById("msg").value = " ";
+      emailStatus.classList.remove("hidden");
+      emailStatus.classList.add("email-success");
+      setTimeout(function () {
+        emailStatus.classList.add("hidden");
+      }, 3000);
+      // emailRow.innerHTML += `<div class="send-status email-success">
+      //   Your Message Sent Successfully.
+      // </div>`;
     })
     .catch((err) => {
       console.log(err);
+      emailStatus.classList.remove("hidden");
+      emailStatus.classList.add("email-fail");
+      setTimeout(function () {
+        emailStatus.classList.add("hidden");
+      }, 3000);
+
+      //   emailRow.innerHTML += `<div class="send-status email-fail">
+      //   Your Message Sent Successfully.
+      // </div>`;
     });
 }
 submitElm.addEventListener("click", sendMail);

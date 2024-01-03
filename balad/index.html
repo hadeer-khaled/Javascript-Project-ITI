@@ -278,9 +278,9 @@
       <!--Slider End-->
 
       <!--Main Content Start-->
-      <div class="main-content">
+      <div id="main-content" class="main-content">
         <!--Mayor Msg with Video Start-->
-        <section class="Mayor-video-msg">
+        <section id="Mayor-video-msg" class="Mayor-video-msg">
           <div class="container">
             <div class="row">
               <div class="col-md-4 col-sm-5">
@@ -329,7 +329,7 @@
 
         <!--Local Boards & Services Start-->
         <section
-          class="body-section hidden wf100 p80 h2-local-brands depart-info">
+          class="body-section removed wf100 p80 h2-local-brands depart-info">
           <div class="container">
             <div class="row">
               <div class="col-md-12">
@@ -405,7 +405,7 @@
         <!--Local Boards & Services End-->
 
         <!--Read Some Facts Start-->
-        <section class="body-section hidden wf100 some-facts">
+        <section class="body-section removed wf100 some-facts">
           <div class="container">
             <h2>Read Some Facts</h2>
             <ul>
@@ -441,7 +441,7 @@
         <!--Read Some Facts End-->
 
         <!-- Google Map with Contact Form -->
-        <div class="body-section hidden map-form p80">
+        <div class="body-section removed map-form p80">
           <div class="container">
             <div class="row">
               <div class="col-md-4 col-sm-5">
@@ -453,6 +453,7 @@
                 </p>
 
                 <a
+                  id="map-btn"
                   href="https://maps.app.goo.gl/mEVBnZbZWSf2xNcL6"
                   class="btn btn-danger">
                   See On Google Maps
@@ -473,7 +474,7 @@
     <!--Wrapper End-->
 
     <!--City News Start-->
-    <section class="body-section hidden wf100 city-news p75">
+    <section class="body-section removed wf100 city-news p75">
       <div class="container">
         <div class="title-style-3">
           <h3>Be Updated with City News</h3>
@@ -484,7 +485,7 @@
             <div class="news-box">
               <div class="new-thumb">
                 <span class="cat c1">News</span>
-                <img src="images/h3citynews-1.jpg" alt="" />
+                <img src="images/eg1.jpg" alt="" />
               </div>
               <div class="new-txt">
                 <ul class="news-meta">
@@ -602,9 +603,9 @@
     <!--City News End-->
 
     <!-- Google Map with Contact Form -->
-    <div class="body-section hidden map-form p80">
-      <div class="container">
-        <div class="row">
+    <div class="body-section removed map-form p80">
+      <div id="email-container" class="container">
+        <div id="email-row" class="row">
           <div class="col-md-12 contact-form m80 my-5">
             <h3 class="stitle text-center">Get in Touch</h3>
             <form>
@@ -635,6 +636,9 @@
                 </li>
               </ul>
             </form>
+          </div>
+          <div id="email-status" class="hidden send-status">
+            Your Message Sent Successfully.
           </div>
         </div>
       </div>
