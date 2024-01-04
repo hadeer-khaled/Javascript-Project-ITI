@@ -122,7 +122,7 @@ countriesNameSelectElem.addEventListener("change", function () {
         const cca2 = data[0].name.common;
         console.log(cca2);
         fetch(
-          `https://api.worldnewsapi.com/search-news?api-key=ae94509454cb4badb712cf2b26e0af53&text=${cca2}`
+          `https://api.worldnewsapi.com/search-news?api-key=798b170d63844143bad04c552b7d3911&text=${cca2}`
         )
           .then((res) => {
             return res.json();
@@ -144,12 +144,16 @@ countriesNameSelectElem.addEventListener("change", function () {
                 element
                   .querySelector(".new-thumb")
                   .querySelector("img").src = `${imgeVar}`;
+
                 element
                   .querySelector(".new-thumb")
                   .querySelector("img").onerror = function () {
                   element.querySelector(".new-thumb").querySelector("img").src =
                     "images/eg1.jpg";
                 };
+                element
+                  .querySelector(".new-thumb")
+                  .querySelector("img").style.height = "200px";
                 element
                   .querySelector(".new-txt")
                   .querySelector(".news-meta")
@@ -167,7 +171,10 @@ countriesNameSelectElem.addEventListener("change", function () {
                 element
                   .querySelector(".new-txt")
                   .querySelector("h6")
-                  .querySelector("a").innerHTML = `${newsList[i].title}`;
+                  .querySelector("a").innerHTML = `${newsList[i].title.slice(
+                  0,
+                  51
+                )}`;
                 element
                   .querySelector(".new-txt")
                   .querySelector("p").innerHTML = `${newsList[i].text.slice(
@@ -177,7 +184,9 @@ countriesNameSelectElem.addEventListener("change", function () {
 
                 element
                   .querySelector(".news-box-f")
-                  .querySelector("span").innerHTML = `${newsList[i].author}`;
+                  .querySelector("span").innerHTML = `${
+                  newsList[i].author.split(",")[0]
+                }`;
 
                 element
                   .querySelector(".news-box-f")
