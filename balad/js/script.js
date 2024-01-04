@@ -187,8 +187,6 @@ countriesNameSelectElem.addEventListener("change", function () {
               }
             });
 
-            ///////////////////////////////////////////////////////////////////////////////////////////
-
             ///////////////////////////////////////////Old Approach////////////////////////////////////////////////
             // document.getElementById("news-container").innerHTML = "";
             // alternativeImage = "balad/images/altImage.jpg";
@@ -258,18 +256,117 @@ countriesNameSelectElem.addEventListener("change", function () {
 }); // End of countriesNameSelectElem.addEventListener({})
 
 //=============== Gey in touch =================================//
+// var submitElm = document.getElementById("submit");
+// var emailRow = document.getElementById("email-row");
+// var emailStatus = document.getElementById("email-status");
+// submitElm.style.cursor = "not-allowed";
+// var ulElems = document.querySelector("ul.row").children;
+// console.log("ul: ", ulElems);
+
+// // for (let ulElem of ulElems) {
+// //   console.log(ulElem.children);
+// //
+// // }
+
+// document.getElementById("name").addEventListener("change", () => {
+//   name = document.getElementById("name").value;
+//   console.log(name);
+// });
+// document
+//   .getElementById("email")
+//   .addEventListener(
+//     "change",
+//     () => (email = document.getElementById("email").value)
+//   );
+// // document
+// //   .getElementById("name")
+// //   .addEventListener(
+// //     "change",
+// //     () => (name = document.getElementById("name").value)
+// //   );
+
+// message = document.getElementById("msg").value;
+
+// if (!(name == "" || name == "  " || email == "" || email == "")) {
+//   submitElm.style.cursor = "pointer";
+//   submitElm.removeAttribute("disabled");
+// }
+
+// function sendMail() {
+//   (function () {
+//     emailjs.init("nR2NW5Zn2awN3i0-0");
+//   })();
+
+//   var mailData = {
+//     name: document.getElementById("name").value,
+//     email: document.getElementById("email").value,
+//     message: document.getElementById("msg").value,
+//   };
+//   const serviceID = "service_2tp9zeb";
+//   const templateID = "template_agm5yg9";
+
+//   // "" or " "
+
+//   emailjs
+//     .send(serviceID, templateID, mailData)
+//     .then((res) => {
+//       // console.log("name = ", document.getElementById("name").value, "<");
+//       document.getElementById("name").value = "";
+//       document.getElementById("email").value = "";
+//       document.getElementById("msg").value = "";
+//       emailStatus.classList.remove("hidden");
+//       emailStatus.classList.add("email-success");
+//       setTimeout(function () {
+//         emailStatus.classList.add("hidden");
+//       }, 3000);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       emailStatus.classList.remove("hidden");
+//       emailStatus.classList.add("email-fail");
+//       setTimeout(function () {
+//         emailStatus.classList.add("hidden");
+//       }, 3000);
+//     });
+// }
+// submitElm.addEventListener("click", sendMail);
+//====================== Get in Touch =====================//
 var submitElm = document.getElementById("submit");
-var emailRow = document.getElementById("email-row");
-var emailStatus = document.getElementById("email-status");
 
 function sendMail() {
+  var name = document.getElementById("name").value;
+  var email = document.getElementById("email").value;
+  var message = document.getElementById("msg").value;
+  var emailStatus = document.getElementById("email-status");
+
+  if (!name.trim() || !email.trim() || !message.trim()) {
+    emailStatus.innerText = "Please fill out all fields.";
+    emailStatus.classList.remove("hidden");
+    emailStatus.classList.add("email-fail");
+    setTimeout(function () {
+      emailStatus.classList.add("hidden");
+    }, 3000);
+    return;
+  }
+  if (email.indexOf("@") == -1) {
+    emailStatus.innerText = "Email address is not valid.";
+    emailStatus.classList.remove("hidden");
+    emailStatus.classList.add("email-fail");
+    setTimeout(function () {
+      emailStatus.classList.add("hidden");
+    }, 3000);
+    return;
+  }
+  emailStatus.classList.remove("email-fail");
+
   (function () {
     emailjs.init("nR2NW5Zn2awN3i0-0");
   })();
+
   var mailData = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    message: document.getElementById("msg").value,
+    name: name,
+    email: email,
+    message: message,
   };
   const serviceID = "service_2tp9zeb";
   const templateID = "template_agm5yg9";
@@ -277,9 +374,10 @@ function sendMail() {
   emailjs
     .send(serviceID, templateID, mailData)
     .then((res) => {
-      document.getElementById("name").value = " ";
-      document.getElementById("email").value = " ";
-      document.getElementById("msg").value = " ";
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("msg").value = "";
+      emailStatus.innerText = "Email sent successfully!";
       emailStatus.classList.remove("hidden");
       emailStatus.classList.add("email-success");
       setTimeout(function () {
@@ -288,6 +386,7 @@ function sendMail() {
     })
     .catch((err) => {
       console.log(err);
+      emailStatus.innerText = "Failed to send email.";
       emailStatus.classList.remove("hidden");
       emailStatus.classList.add("email-fail");
       setTimeout(function () {
@@ -295,4 +394,5 @@ function sendMail() {
       }, 3000);
     });
 }
+
 submitElm.addEventListener("click", sendMail);
