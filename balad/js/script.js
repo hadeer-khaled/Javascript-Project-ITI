@@ -277,8 +277,6 @@ function sendMail() {
   emailjs
     .send(serviceID, templateID, mailData)
     .then((res) => {
-      // console.log(res);
-
       document.getElementById("name").value = " ";
       document.getElementById("email").value = " ";
       document.getElementById("msg").value = " ";
@@ -287,9 +285,6 @@ function sendMail() {
       setTimeout(function () {
         emailStatus.classList.add("hidden");
       }, 3000);
-      // emailRow.innerHTML += `<div class="send-status email-success">
-      //   Your Message Sent Successfully.
-      // </div>`;
     })
     .catch((err) => {
       console.log(err);
@@ -298,10 +293,6 @@ function sendMail() {
       setTimeout(function () {
         emailStatus.classList.add("hidden");
       }, 3000);
-
-      //   emailRow.innerHTML += `<div class="send-status email-fail">
-      //   Your Message Sent Successfully.
-      // </div>`;
     });
 }
 submitElm.addEventListener("click", sendMail);
